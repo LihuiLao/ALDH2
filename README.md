@@ -62,7 +62,7 @@ You can run the scripts directly in RStudio, Jupyter Notebook, or via command li
 3. Run the following command
 
 ```bash
-python OH_Peak_Pair_extract.py
+python OH_Peak_Pair_extract.py OH_Peak_Pair_Extract_Dataset.xlsx
 ```
 
 ### Expected Output
