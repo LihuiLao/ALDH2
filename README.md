@@ -55,7 +55,7 @@ Since these are standalone scripts, no compilation or complex installation is re
 
 You can run the scripts directly in RStudio, Jupyter Notebook, or via command line.
 
-**Example (Generating Figure 1):**
+**Example:**
 
 1. Open your terminal or command prompt.
 2. Navigate to the directory containing the script and the dataset.
