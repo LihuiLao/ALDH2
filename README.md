@@ -47,13 +47,14 @@ To reproduce the figures exactly as shown in the paper, we recommend using the s
 
 Since these are standalone scripts, no compilation or complex installation is required.
 
-1. **Download**: Clone this repository or download the ZIP file.
+1. **Download**: Clone this repository.
+   
    ```bash
    git clone https://github.com/LihuiLao/ALDH2
 
 ## 3. How to run
 
-You can run the scripts directly in RStudio, Jupyter Notebook, or via command line.
+You can run the scripts directly in RStudio and via command line.
 
 **Example:**
 
