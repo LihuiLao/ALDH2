@@ -4,26 +4,26 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import re
 
-# --- 1. 数据加载与准备 ---
+# --- 1.  ---
 try:
     df = pd.read_csv('violin_plot.csv')
-    print("✔️ 文件 'violin_plot.csv' 加载成功!")
+    print("✔️  'violin_plot.csv' !")
 except FileNotFoundError:
-    print("❌ 错误：未找到 'violin_plot.csv' 文件。请确保它和您的代码在同一个文件夹中。")
+    print("❌ ： 'violin_plot.csv' ")
     exit()
 
 metabolite_col_name = df.columns[0]
 df = df.set_index(metabolite_col_name)
 
-# --- 2. 数据清洗 ---
-print("\n🔍 正在检查并清洗数据...")
+# --- 2.  ---
+print("\n🔍 ...")
 for col in df.columns:
     df[col] = pd.to_numeric(df[col], errors='coerce')
 df.dropna(how='all', inplace=True)
-print("✔️ 数据清洗完毕。")
+print("✔️ ")
 
-# --- 3. 计算RSD的核心逻辑 ---
-print("\n🔬 正在为每个代谢物计算RSD...")
+# --- 3. RSD ---
+print("\n🔬 RSD...")
 groups = {}
 for col in df.columns:
     match = re.search(r'(QC|LLH_\d+)', col)
@@ -51,45 +51,45 @@ for group_name, columns in groups.items():
     rsd_results.append(temp_df)
 
 df_rsd = pd.concat(rsd_results, ignore_index=True)
-print("✔️ RSD计算完成。")
+print("✔️ RSD")
 
 qc_rsd_median = df_rsd[df_rsd['Category'] == 'QC']['RSD'].median()
 sample_rsd_median = df_rsd[df_rsd['Category'] == 'Sample']['RSD'].median()
-print(f"\n📊 QC组RSD中位数: {qc_rsd_median:.2f}%")
-print(f"   样本组RSD中位数: {sample_rsd_median:.2f}%")
+print(f"\n📊 QCRSD: {qc_rsd_median:.2f}%")
+print(f"   RSD: {sample_rsd_median:.2f}%")
 
-# --- 4. 绘图 (修改后的核心部分) ---
+# --- 4.  () ---
 plt.style.use('seaborn-v0_8-whitegrid')
-fig, ax = plt.subplots(figsize=(9, 9)) # 稍微调整画布比例
+fig, ax = plt.subplots(figsize=(9, 9)) # 
 
-# 步骤1: 绘制小提琴图，但移除内部的图 (inner=None)
-# 我们让它半透明 (alpha=0.7) 以便看清后面的箱线图
+# 1: ， (inner=None)
+#  (alpha=0.7) 
 sns.violinplot(
     data=df_rsd,
     x='Category',
     y='RSD',
     order=['QC', 'Sample'],
     palette={'QC': '#4682B4', 'Sample': '#FFA07A'},
-    inner=None, # <-- 关键改动1：移除内部绘图
-    alpha=0.7,  # 使小提琴半透明
+    inner=None, # <-- 1：
+    alpha=0.7,  # 
     ax=ax
 )
 
-# 步骤2: 在小提琴图上层叠加一个清晰的箱线图
+# 2: 
 sns.boxplot(
     data=df_rsd,
     x='Category',
     y='RSD',
     order=['QC', 'Sample'],
-    width=0.2,          # <-- 关键改动2：设置一个较窄的宽度
-    boxprops={'facecolor':'white', 'edgecolor':'black', 'alpha':0.9}, # 设置箱体样式
-    whiskerprops={'color':'black', 'linewidth':1.5},      # 设置须线样式
-    capprops={'color':'black', 'linewidth':1.5},          # 设置顶盖线样式
-    medianprops={'color':'red', 'linewidth':2},           # 突出中位数
+    width=0.2,          # <-- 2：
+    boxprops={'facecolor':'white', 'edgecolor':'black', 'alpha':0.9}, # 
+    whiskerprops={'color':'black', 'linewidth':1.5},      # 
+    capprops={'color':'black', 'linewidth':1.5},          # 
+    medianprops={'color':'red', 'linewidth':2},           # 
     ax=ax
 )
 
-# --- 5. 添加注释和美化 ---
+# --- 5.  ---
 ax.axhline(y=20, color='grey', linestyle='--', linewidth=1.2, zorder=0)
 ax.text(ax.get_xlim()[1], 20, ' 20% Threshold', va='center', ha='left', color='grey')
 ax.axhline(y=30, color='darkgrey', linestyle='--', linewidth=1.2, zorder=0)
@@ -100,8 +100,8 @@ ax.set_xlabel('Group', fontsize=14, labelpad=15)
 ax.set_ylabel('RSD (%)', fontsize=14, labelpad=15)
 ax.tick_params(axis='both', which='major', labelsize=12)
 
-# 关键改动3: 移除了 set_ylim，让Y轴自动缩放以包含所有数据
-# ax.set_ylim(0, ...) # 此行已被删除
+# 3:  set_ylim，Y
+# ax.set_ylim(0, ...) # 
 
 plt.tight_layout()
 plt.show()
